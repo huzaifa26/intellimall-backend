@@ -34,8 +34,12 @@ con.connect(function(err) {
   console.log("Connected!");
 });
 
+app.get("/",(req,res)=>{
+  res.send("WELCOME TO APP")
+})
 
-app.get('/',(req,res)=>{
+
+app.get('/admin',(req,res)=>{
   con.query("SELECT * FROM admin", function (err, result, fields) {
     if (err) throw err;
     res.send(result);
