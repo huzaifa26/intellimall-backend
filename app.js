@@ -15,24 +15,23 @@ var mysql = require('mysql');
 var cors = require('cors')
 const express = require('express')
 var bodyParser = require('body-parser')
-var fs = require('fs');
 const app = express()
 app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "1122",
-  database: "intellimall"
-});
+// var con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "1122",
+//   database: "intellimall"
+// });
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// con.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
 app.get("/",(req,res)=>{
   res.send("WELCOME TO APP")
