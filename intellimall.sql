@@ -34,7 +34,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- insert into admin(email_address,password) values
--- ('abidhuzaifa128@gmail.com','1122')
+-- ('jhon@gmail.com','1122')
 
 -- --------------------------------------------------------
 
