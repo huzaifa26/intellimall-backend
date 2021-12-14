@@ -45,7 +45,7 @@ app.get("/",(req,res)=>{
 })
 
 app.get('/totalearning',(req,res)=>{
-const sql='select sum(price) from orders where status="Completed"';
+const sql='select sum(price) as price from orders where status="Completed"';
   con.query(sql, function (err, result, fields) {
     if (err) throw err;
     res.send(result);
