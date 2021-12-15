@@ -177,8 +177,10 @@ app.put("/order",(req,res)=>{
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-    res.send(result)
-    res.redirect("/feedback")
+    // res.send(result)
+    if (result.affectedRows>0){
+      res.redirect("/feedback")
+    }
   })
 });
 
