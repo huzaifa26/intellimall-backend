@@ -65,9 +65,9 @@ app.get('/feedback',(req,res)=>{
   });
 
 app.post('/feedback',(req,res)=>{
-  const values=[ 
-    [req.body.user_id,req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.order_id]
-    ];
+  // const values=[ 
+  //   [req.body.user_id,req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.order_id]
+  //   ];
 
     res.send(req.body)
 
