@@ -41,6 +41,17 @@ con.connect(function(err) {
 });
 
 app.get("/",(req,res)=>{
+  const values=[ 
+    [req.body.user_id,ddate,req.body.status,req.body.rating,req.body.comment,req.body.order_id]
+    ];
+    
+    console.log(values[0])
+    
+    con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
+      if (err) throw err;
+      res.send(result);
+    });
+
   res.send("WELCOME TO APP")
 })
 
@@ -171,18 +182,19 @@ app.post("/order",(req,res)=>{
 
 app.put("/order",(req,res)=>{
   const values=[req.body.date,req.body.id];
-
   con.query('UPDATE orders SET last_updated_at=?, status="Completed" WHERE id=?',values,(err,result,fields)=>{
     if (err){
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-    // res.send(result)
-    if (result.affectedRows>0){
-      res.redirect("/feedback")
-    }else{
-      res.send("Error")
-    }
+    res.send(result)
+
+    
+    // if (result.affectedRows>0){
+    //   res.redirect("/feedback")
+    // }else{
+    //   res.send("Error")
+    // }
   })
 });
 
