@@ -52,6 +52,10 @@ const sql='select sum(price) as price from orders where status="Completed"';
   });
 });
 
+app.get('/feedback',(req,res)=>{
+  console.log("Feedback");
+  });
+
 app.get('/admin',(req,res)=>{
 const sql="SELECT * FROM admin";
 	
@@ -174,6 +178,7 @@ app.put("/order",(req,res)=>{
       res.send(err)
     }
     res.send(result)
+    res.redirect("\feedback")
   })
 });
 
