@@ -177,7 +177,7 @@ app.put("/order",(req,res)=>{
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-    // res.send(result)
+    res.send(result)
     res.redirect("/feedback")
   })
 });
