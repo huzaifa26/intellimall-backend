@@ -69,8 +69,7 @@ app.post('/feedback',(req,res)=>{
   //   [req.body.user_id,ddate,req.body.status,req.body.rating,req.body.comment,req.body.order_id]
   //   ];
 
-  //   res.send(req.body)
-  res.send("hahahahahhahah")
+    res.send(req.body)
     
     // con.query("insert into feedback(user_id,last_activity_at,status,rating,comment,order_id) values ?",[values], function (err, result, fields) {
     //   if (err) throw err;
