@@ -178,7 +178,7 @@ app.put("/order",(req,res)=>{
       res.send(err)
     }
     // res.send(result)
-    res.redirect("\feedback")
+    res.redirect("/feedback")
   })
 });
 
