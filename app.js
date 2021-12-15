@@ -180,6 +180,8 @@ app.put("/order",(req,res)=>{
     // res.send(result)
     if (result.affectedRows>0){
       res.redirect("/feedback")
+    }else{
+      res.send("Error")
     }
   })
 });
