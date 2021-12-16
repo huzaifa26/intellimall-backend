@@ -91,10 +91,11 @@ app.post('/user',(req,res)=>{
   [req.body.name,req.body.email_address,req.body.password,req.body.phone,req.body.address,req.body.is_allowed_in_app,req.body.joined_at]
   ];
 	
-	console.log(values[0])
   
   con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send("error")
+    }
     res.send(result);
   });
 });
