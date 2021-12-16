@@ -252,7 +252,7 @@ app.put("/order",(req,res)=>{
 
 // shopping_cart
 app.get("/cart/:id",(req,res)=>{
-  con.query("select * from shopping_cart WHERE id=?",req.params.id,(err,result,fields)=>{
+  con.query("select * from shopping_cart WHERE user_id=?",req.params.id,(err,result,fields)=>{
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
       res.send(err)
