@@ -212,7 +212,7 @@ app.get("/order/user/:id",(req,res)=>{
   console.log(req.params)
 // const sql="select o.id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
 const sql="select * from orders where user_id=?"
-	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
+	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o where user_id=?"
 	
   con.query(sql,req.params.id,(err,result,fields)=>{
     if (err){
@@ -274,7 +274,14 @@ app.post("/cart",(req,res)=>{
 });
 
 app.put("/cart",(req,res)=>{
-  con.query("UPDATE shopping_cart set quantity=? where user_id=? AND product_id=?",[req.body.quantity,req.body.user_id,req.body.product_id],(err,result,fields)=>{
+  let sql=''
+  if (req.body.quantity === 0){
+    sql= "delete from shopping_cart where user_id=? and product_id=?"
+  } else {
+    sql= "UPDATE shopping_cart set quantity=? where user_id=? AND product_id=?"
+  }
+
+  con.query(sql,[req.body.quantity,req.body.user_id,req.body.product_id],(err,result,fields)=>{
     if (err){
       console.log("ERROR IN UPDATING PRODUCT TABLE")
       console.log(err)
