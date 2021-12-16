@@ -89,7 +89,7 @@ app.get('/user',(req,res)=>{
 app.get('/user/login/:email/:password',(req,res)=>{
   con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
     // if (err) throw err;
-    // if (result>1){
+    // if (result[0].email_address === req.params.email && result[0].password === req.params.password){
     //   res.send({
     //     status: true,
     //     message: "login successfull",
@@ -99,8 +99,20 @@ app.get('/user/login/:email/:password',(req,res)=>{
     //     status: false,
     //     message: "email or password is not correct",
     //   });
-    // }
-    res.send(result);
+
+      if (result.length > 0){
+        res.send({
+          status: true,
+          message: "login successfull",
+        });
+      } else{
+        res.send({
+          status: false,
+          message: "email or password is not correct",
+        });
+    }
+    // console.log(result[0]) 
+    // res.send(result);
 
   });
 });
