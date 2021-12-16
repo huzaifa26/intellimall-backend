@@ -86,6 +86,14 @@ app.get('/user',(req,res)=>{
   });
 });
 
+app.get('/user/login/:email/:password',(req,res)=>{
+  con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
+    // if (err) throw err;
+    res.send(result);
+  });
+});
+
+
 app.post('/user',(req,res)=>{
   const values=[ 
   [req.body.name,req.body.email_address,req.body.password,req.body.phone,req.body.address,req.body.is_allowed_in_app,req.body.joined_at]
