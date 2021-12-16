@@ -109,6 +109,7 @@ app.get('/user/login/:email/:password',(req,res)=>{
         });
       } else{
         res.send({
+          user:null,
           status: false,
           message: "email or password is not correct",
         });
@@ -205,6 +206,24 @@ app.get("/order",(req,res)=>{
     res.send(result)
   })
 });
+
+
+app.get("/order/user/:id",(req,res)=>{
+  console.log(req.params)
+// const sql="select o.id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
+const sql="select * from orders where user_id=?"
+	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
+	
+  con.query(sql,req.params.id,(err,result,fields)=>{
+    if (err){
+      console.log("ERORR GETTING ALL ORDERS")
+      res.send(err)
+    }
+    res.send(result)
+  })
+});
+
+
 
 app.post("/order",(req,res)=>{
   const values=[[req.body.user_id,req.body.price,req.body.status,req.body.date]];
