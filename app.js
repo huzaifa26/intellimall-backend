@@ -41,10 +41,7 @@ con.connect(function(err) {
 });
 
 app.get("/",(req,res)=>{
-  con.query("select * from feedback where user_id=? and order_id=?",[req.params.user_id,req.params.order_id], (err, result, fields)=> {
-    if (err) throw err;
-    res.send(result);
-  })
+  res.send("welcome")
 })
 
 app.get('/totalearning',(req,res)=>{
@@ -55,16 +52,11 @@ const sql='select sum(price) as price from orders where status="Completed"';
   });
 });
 
-app.get('/feedback',(req,res)=>{
-  // const values=[ 
-  //   [req.body.user_id,ddate,req.body.status,req.body.rating,req.body.comment,req.body.order_id]
-  //   ];
-    
-  //   con.query("insert into feedback(user_id,last_activity_at,status,rating,comment,order_id) values ?",[values], function (err, result, fields) {
-  //     if (err) throw err;
-  //     res.send(result);
-  //   });
-  res.send("FeedBack")
+app.get('/feedback/:user_id/:order_id',(req,res)=>{
+  con.query("select * from feedback where user_id=? and order_id=?",[req.params.user_id,req.params.order_id], (err, result, fields)=> {
+    if (err) throw err;
+    res.send(result);
+  })
   });
 
 app.post('/feedback',(req,res)=>{
