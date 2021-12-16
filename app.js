@@ -14,7 +14,8 @@
 var mysql = require('mysql'); 
 var cors = require('cors')
 const express = require('express')
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const { response } = require('express');
 const app = express()
 app.use(cors())
 
@@ -102,6 +103,7 @@ app.get('/user/login/:email/:password',(req,res)=>{
 
       if (result.length > 0){
         res.send({
+          user:response,
           status: true,
           message: "login successfull",
         });
