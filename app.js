@@ -79,11 +79,9 @@ app.post('/feedback',(req,res)=>{
   });
 
   app.put('/feedback',(req,res)=>{
-    const values=[ 
-      [req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.id]
-      ];
+    const values=[req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.id];
   
-      con.query("update feedback set last_activity=?,status=?, rating=?, comment=? where id=?",[values], function (err, result, fields) {
+      con.query("update feedback set last_activity_at=?,status=?, rating=?, comment=? where id=?",[req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.id], function (err, result, fields) {
         if (err) throw err;
         res.send(result);
       });
