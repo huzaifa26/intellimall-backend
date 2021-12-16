@@ -103,7 +103,7 @@ app.get('/user/login/:email/:password',(req,res)=>{
 
       if (result.length > 0){
         res.send({
-          user:response[0],
+          user:result,
           status: true,
           message: "login successfull",
         });
