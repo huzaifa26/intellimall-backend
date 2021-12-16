@@ -58,7 +58,14 @@ app.get('/feedback/:user_id/:order_id',(req,res)=>{
     if (err) throw err;
     res.send(result);
   })
-  });
+});
+
+app.get('/feedbackuser/:user_id',(req,res)=>{
+  con.query("select * from feedback where user_id=? and status='pending'",[req.params.user_id], (err, result, fields)=> {
+    if (err) throw err;
+    res.send(result);
+  })
+});
 
 app.post('/feedback',(req,res)=>{
   const values=[ 
