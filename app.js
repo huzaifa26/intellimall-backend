@@ -41,7 +41,10 @@ con.connect(function(err) {
 });
 
 app.get("/",(req,res)=>{
-  res.send("WELCOME TO APP")
+  con.query("select * from feedback where user_id=? and order_id=?",[req.params.user_id,req.params.order_id], (err, result, fields)=> {
+    if (err) throw err;
+    res.send(result);
+  })
 })
 
 app.get('/totalearning',(req,res)=>{
