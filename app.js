@@ -41,7 +41,7 @@ con.connect(function(err) {
 });
 
 app.get("/",(req,res)=>{
-  res.send("welcome")
+  res.send("welcome");
 })
 
 app.get('/totalearning',(req,res)=>{
