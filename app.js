@@ -283,8 +283,11 @@ app.post("/cart",(req,res)=>{
 app.put("/cart",(req,res)=>{
   let sql=''
   if (req.body.quantity === 0){
+    res.send("delete")
     sql= "delete from shopping_cart where user_id=? and product_id=?"
   } else {
+    res.send("update")
+
     sql= "UPDATE shopping_cart set quantity=? where user_id=? AND product_id=?"
   }
 
