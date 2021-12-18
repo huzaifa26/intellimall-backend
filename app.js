@@ -148,18 +148,20 @@ app.post('/user',(req,res)=>{
     if (err) {
       if(err.code === "ER_DUP_ENTRY"){
         res.send({
-          message:"Email Already used"
+          message:"Email Already used",
+          user: null
         })
       }
     }else{
       res.send({
-        name:req.body.name,
+        message:"Resigteration Successful",
+        user:{name:req.body.name,
         email_address:req.body.email_address,
         password:req.body.password,
         phone:req.body.phone,
         address:req.body.address,
         is_allowed_in_app:req.body.is_allowed_in_app,
-        joined_at:req.body.joined_at
+        joined_at:req.body.joined_at}
       });
     }
   });
