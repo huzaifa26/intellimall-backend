@@ -174,7 +174,14 @@ app.get('/product',(req,res)=>{
     if (err) throw err;
     res.send(result);
   });
-}); 
+});
+
+app.get('/product/:title',(req,res)=>{
+  con.query("select * from products where title=?",req.params.title, function (err, result, fields) {
+    if (err) throw err;
+    res.send(result);
+  });
+});
 
 
 app.post('/product',(req,res)=>{
