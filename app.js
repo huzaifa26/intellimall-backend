@@ -19,8 +19,10 @@ const { response } = require('express');
 const app = express()
 app.use(cors())
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+
+app.use(bodyParser.json({ limit: '50mb' }))
 
 // var con = mysql.createConnection({
 //   host: "localhost",
@@ -203,12 +205,8 @@ app.get('/product/:title',(req,res)=>{
 
 
 app.post('/product',(req,res)=>{
-	// let date=new Date()
-
-	// let ddate=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()  
-
   const values=[	
-  [req.body.title,req.body.description,req.body.image_url,req.body.price,req.body.category,req.body.date]
+  [req.body.title,req.body.description,req.body.image_url,req.body.price,req.body.category.toLowerCase(),req.body.last_updated_at]
   ];
 
   con.query("insert into products(title,description,image_url,price,category,last_updated_at) values ?",[values], function (err, result, fields) {
@@ -276,9 +274,9 @@ app.get("/order/user/:id",(req,res)=>{
   })
 });
 
-// ["Beverages","Bread","Canned Goods","Dairy","Dry Goods","Frozen Foods","Meat","Produce","Cleaners","Paper Goods","Personal Care"]
+// ["Beverages","Bread","Canned Goods","Dairy","Dry Goods","Frozen Foods","Meat"]
 
-// ["beverages","bread","bakery","canned goods","jarred goods","dairy","dry goods","baking goods","frozen foods","meat","produce","cleaners","paper goods","personal care"]
+// ["beverages","bread","bakery","canned goods","jarred goods","dairy","dry goods","baking goods","frozen foods","meat"]
 
 app.post("/order",(req,res)=>{
   const values=[[req.body.user_id,req.body.price,req.body.status,req.body.date]];
