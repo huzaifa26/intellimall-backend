@@ -142,13 +142,26 @@ app.post('/user',(req,res)=>{
   const values=[ 
   [req.body.name,req.body.email_address,req.body.password,req.body.phone,req.body.address,req.body.is_allowed_in_app,req.body.joined_at]
   ];
-	
+	 
   
   con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
     if (err) {
-      res.send("error")
+      if(err.code === "ER_DUP_ENTRY"){
+        res.send({
+          message:"Email Already used"
+        })
+      }
+    }else{
+      res.send({
+        name:req.body.name,
+        email_address:req.body.email_address,
+        password:req.body.password,
+        phone:req.body.phone,
+        address:req.body.address,
+        is_allowed_in_app:req.body.is_allowed_in_app,
+        joined_at:req.body.joined_at
+      });
     }
-    res.send(result);
   });
 });
 
@@ -236,21 +249,34 @@ app.get("/order",(req,res)=>{
 
 
 app.get("/order/user/:id",(req,res)=>{
-  console.log(req.params)
+  let order
 // const sql="select o.id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
-const sql="select * from orders where user_id=?"
+  const sql="select * from orders where user_id=?"
 	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o where user_id=?"
 	
   con.query(sql,req.params.id,(err,result,fields)=>{
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
-      res.send(err)
     }
-    res.send(result)
+    console.log("Successfull")
+    order=result[0]
+    
+      
+    con.query("select * from shopping_cart WHERE user_id=?",req.params.id,(err,result,fields)=>{
+      if (err){
+        console.log("ERORR GETTING ALL ORDERS")
+        // res.send(err)
+      }
+      console.log(result[0])
+      order['item']=result
+      res.send(order)
+    })
   })
 });
 
+// ["Beverages","Bread","Canned Goods","Dairy","Dry Goods","Frozen Foods","Meat","Produce","Cleaners","Paper Goods","Personal Care"]
 
+// ["beverages","bread","bakery","canned goods","jarred goods","dairy","dry goods","baking goods","frozen foods","meat","produce","cleaners","paper goods","personal care"]
 
 app.post("/order",(req,res)=>{
   const values=[[req.body.user_id,req.body.price,req.body.status,req.body.date]];
