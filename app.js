@@ -21,7 +21,6 @@ app.use(cors())
 
 // app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
-
 app.use(bodyParser.json({ limit: '50mb' }))
 
 // var con = mysql.createConnection({
@@ -145,7 +144,6 @@ app.post('/user',(req,res)=>{
   [req.body.name,req.body.email_address,req.body.password,req.body.phone,req.body.address,req.body.is_allowed_in_app,req.body.joined_at]
   ];
 	 
-  
   con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
     if (err) {
       if(err.code === "ER_DUP_ENTRY"){
@@ -185,7 +183,18 @@ app.put('/user',(req,res)=>{
   }
 });
 
- 
+app.put('/user/:id',(req,res)=>{
+  const values=[req.body.name, req.body.email_address, req.body.password, req.body.phone, req.body.address, req.params.id];
+     
+    con.query("UPDATE users set name=?, email_address=?, password=?, phone=?, address=? where id=?",values, function (err, result, fields) {
+      if (err) {
+        res.send(err)
+      }else{
+        res.send(result); 
+      }
+    });
+});
+
 app.get('/product',(req,res)=>{
   con.query("select * from products", function (err, result, fields) {
     if (err) throw err;
