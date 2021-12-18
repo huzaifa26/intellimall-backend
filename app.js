@@ -177,7 +177,10 @@ app.get('/product',(req,res)=>{
 });
 
 app.get('/product/:title',(req,res)=>{
-  con.query("select * from products where title=?",req.params.title, function (err, result, fields) {
+  const title="'("+req.params.title+")'"
+  const sql ="select title from products where title REGEXP " + title;
+
+  con.query(sql,title, function (err, result, fields) {
     if (err) throw err;
     res.send(result);
   });
