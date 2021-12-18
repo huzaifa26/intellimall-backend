@@ -178,7 +178,7 @@ app.get('/product',(req,res)=>{
 
 app.get('/product/:title',(req,res)=>{
   const title="'("+req.params.title+")'"
-  const sql ="select title from products where title REGEXP " + title;
+  const sql ="select * from products where title REGEXP " + title;
 
   con.query(sql,title, function (err, result, fields) {
     if (err) throw err;
@@ -355,3 +355,6 @@ let port=process.env.PORT || 5000
 app.listen(port,()=>{
     console.log("Listening on " + port)
 });
+
+
+
