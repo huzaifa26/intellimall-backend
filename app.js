@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5
 app.use(bodyParser.json({ limit: '50mb' }))
 
 // var con = mysql.createConnection({
-//   host: "localhost",
+//   host: "localhost", 
 //   user: "root",
 //   password: "password",
 //   database: "intellimall" 
@@ -319,7 +319,22 @@ app.get("/cart/:id",(req,res)=>{
       console.log("ERORR GETTING ALL ORDERS")
       res.send(err)
     }
-    res.send(result)
+
+    let product=[]
+    for(let i=0;i<result.length;i++){
+      product.push(result[i].product_id)
+    }
+
+    let obj={}
+    obj["cart"]=result
+
+
+
+    con.query("select * from products where id in (?)",[product],(err,result,fields)=>{
+      obj["products"]=result
+      res.send(obj)
+    })
+
   })
 });
 
@@ -390,6 +405,3 @@ let port=process.env.PORT || 5000
 app.listen(port,()=>{
     console.log("Listening on " + port)
 });
-
-
-
