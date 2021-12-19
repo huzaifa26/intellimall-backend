@@ -32,17 +32,17 @@ app.use(bodyParser.json({ limit: '50mb' }))
 
 var con = mysql.createConnection({
   host: "sql6.freemysqlhosting.net",
-  user: "sql6458205",
-  password: "3CcwdlGKqG",
-  database: "sql6458205" 
+  user: "sql6459930",
+  password: "BXgVmKuFeJ",
+  database: "sql6459930" 
 });
 
 con.connect((err)=> {
   if (err) {
-    res.send(err)
+    throw err
   }
   console.log("Connected!");
-});
+}); 
 
 app.get("/",(req,res)=>{
   res.send("welcome");
