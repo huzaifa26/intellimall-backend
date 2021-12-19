@@ -37,8 +37,10 @@ var con = mysql.createConnection({
   database: "sql6458205" 
 });
 
-con.connect(function(err) {
-  if (err) throw err;
+con.connect((err)=> {
+  if (err) {
+    res.send(err)
+  }
   console.log("Connected!");
 });
 
@@ -49,21 +51,27 @@ app.get("/",(req,res)=>{
 app.get('/totalearning',(req,res)=>{
 const sql='select sum(price) as price from orders where status="Completed"';
   con.query(sql, function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
 
 app.get('/feedback/:user_id/:order_id',(req,res)=>{
   con.query("select * from feedback where user_id=? and order_id=?",[req.params.user_id,req.params.order_id], (err, result, fields)=> {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    } 
     res.send(result);
   })
 });
 
 app.get('/feedbackuser/:user_id',(req,res)=>{
   con.query("select * from feedback where user_id=? and status='pending'",[req.params.user_id], (err, result, fields)=> {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   })
 });
@@ -74,7 +82,9 @@ app.post('/feedback',(req,res)=>{
     ];
 
     con.query("insert into feedback(user_id,last_activity_at,status,rating,comment,order_id) values ?",[values], function (err, result, fields) {
-      if (err) throw err;
+      if (err) {
+        res.send(err)
+      }
       res.send(result);
     });
   });
@@ -83,7 +93,9 @@ app.post('/feedback',(req,res)=>{
     const values=[req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.id];
   
       con.query("update feedback set last_activity_at=?,status=?, rating=?, comment=? where id=?",[req.body.last_activity_at,req.body.status,req.body.rating,req.body.comment,req.body.id], function (err, result, fields) {
-        if (err) throw err;
+        if (err) {
+          res.send(err)
+        }
         res.send(result);
       });
     });
@@ -93,21 +105,27 @@ app.get('/admin',(req,res)=>{
 const sql="SELECT * FROM admin";
 	
   con.query(sql, function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
 
 app.get('/user',(req,res)=>{
   con.query("select * from users", function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
 
 app.get('/user/login/:email/:password',(req,res)=>{
   con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
-    // if (err) throw err;
+    // if (err) {
+    //   res.send(err)
+    // }
     // if (result[0].email_address === req.params.email && result[0].password === req.params.password){
     //   res.send({
     //     status: true,
@@ -171,13 +189,17 @@ app.put('/user',(req,res)=>{
   let values=null
   if(req.body.is_allowed_in_app === 0){
     con.query("update users SET is_allowed_in_app=? WHERE id=?",[1,req.body.id], function (err, result, fields) {
-      if (err) throw err;
+      if (err) {
+        res.send(err)
+      }
       res.send(result);
     });
 
   }else if(req.body.is_allowed_in_app === 1){
     con.query("update users SET is_allowed_in_app=? WHERE id=?",[0,req.body.id], function (err, result, fields) {
-      if (err) throw err;
+      if (err) {
+        res.send(err)
+      }
       res.send(result);
     });
   }
@@ -197,7 +219,9 @@ app.put('/user/:id',(req,res)=>{
 
 app.get('/product',(req,res)=>{
   con.query("select * from products", function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
@@ -207,7 +231,9 @@ app.get('/product/:title',(req,res)=>{
   const sql ="select * from products where title REGEXP " + title;
 
   con.query(sql,title, function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
@@ -219,7 +245,9 @@ app.post('/product',(req,res)=>{
   ];
 
   con.query("insert into products(title,description,image_url,price,category,last_updated_at) values ?",[values], function (err, result, fields) {
-    if (err) throw err;
+    if (err) {
+      res.send(err)
+    }
     res.send(result);
   });
 });
@@ -328,13 +356,10 @@ app.get("/cart/:id",(req,res)=>{
     let obj={}
     obj["cart"]=result
 
-
-
     con.query("select * from products where id in (?)",[product],(err,result,fields)=>{
       obj["products"]=result
       res.send(obj)
     })
-
   })
 });
 
