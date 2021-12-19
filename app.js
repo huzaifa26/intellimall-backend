@@ -348,18 +348,18 @@ app.get("/cart/:id",(req,res)=>{
       res.send(err)
     }
 
-    let product=[]
-    for(let i=0;i<result.length;i++){
-      product.push(result[i].product_id)
-    }
-
     let obj={}
-    obj["cart"]=result
+    let len=result.length-1
+    obj=result
 
-    con.query("select * from products where id in (?)",[product],(err,result,fields)=>{
-      obj["products"]=result
-      res.send(obj)
-    })
+    for(let i=0;i<=len;i++){
+      con.query("select * from products where id=?",result[i].product_id,(err,result,fields)=>{
+        obj[i].product=result[0]
+        if (i == len){
+          res.send(obj) 
+        }
+      })
+    }
   })
 });
 
