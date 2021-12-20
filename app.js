@@ -36,11 +36,11 @@ var con = mysql.createConnection({
   password: "BXgVmKuFeJ",
   database: "sql6459930" 
 });
-
+ 
 con.connect((err)=> {
   if (err) {
     // throw err
-    console.log(err)
+    throw (err)
   }
   console.log("Connected!");
 }); 
@@ -300,24 +300,37 @@ app.get("/order",(req,res)=>{
 
 
 app.get("/order/user/:id",(req,res)=>{
-  let order
+  let order=[]
 // const sql="select o.id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o ON o.user_id = u.id"
   const sql="select * from orders where user_id=?"
 	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o where user_id=?"
 	
-  con.query(sql,req.params.id,(err,result,fields)=>{
+  con.query(sql,req.params.id,(err,result,fields)=>{ 
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
     }else if (result.length>0){
-      order=result[0]
-      con.query("select * from shopping_cart WHERE user_id=?",req.params.id,(err,result,fields)=>{
-        if (err){
-          console.log("ERORR from shopping_cart")
-          res.send(err)
-        }
-        order['item']=result
-        res.send([order])
-      })
+      order=result
+      // console.log(order)
+
+      let len=result.length
+      
+      for (let i=0;i<len;i++){
+          con.query("select * from order_items WHERE order_id=?",result[i].id,(err,result,fields)=>{
+            if (err){
+              console.log("ERORR from shopping_cart")
+              res.send(err)
+            }
+ 
+            // console.log(result)
+            order[i]['item']=result
+            // res.send(order)
+            // console.log(order[i])
+            if(i === len-1){
+              res.send(order)
+            }
+
+          })
+      }
     } else {
       res.send([])
     }
@@ -330,7 +343,6 @@ app.post("/order",(req,res)=>{
   for (let i=0;i<req.body.cart.length;i++){
     price=price+req.body.cart[i].quantity*req.body.cart[i].product.price
   }
-
   const values=[[req.body.user_id,price,"In Progress",req.body.date]];
 
   con.query("insert into orders(user_id,price,status,last_updated_at) values ?",[values],(err,result,fields)=>{
@@ -338,9 +350,7 @@ app.post("/order",(req,res)=>{
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-
     let order_id=result.insertId  
-
     for (let i=0;i<req.body.cart.length;i++){
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
@@ -377,7 +387,7 @@ app.put("/order",(req,res)=>{
     }
     res.send(result)
   })
-});
+}); 
 
 // shopping_cart
 app.get("/cart/:id",(req,res)=>{
