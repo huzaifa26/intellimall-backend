@@ -351,7 +351,7 @@ app.post("/order",(req,res)=>{
         if(i === req.body.cart.length-1){ 
           res.send(result)
         }
-      }) 
+      })  
     }
 
     for (let i=0;i<req.body.cart.length;i++){
