@@ -305,13 +305,12 @@ app.get("/order/user/:id",(req,res)=>{
   const sql="select * from orders where user_id=?"
 	// const sql="select o.id,u.id AS user_id, u.name, u.phone, u.address, o.price, o.status, o.last_updated_at FROM users as u JOIN orders AS o where user_id=?"
 	
-  con.query(sql,req.params.id,(err,result,fields)=>{ 
+  con.query(sql,req.params.id,async (err,result,fields)=>{ 
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
     }else if (result.length>0){
-      order=result
-      // console.log(order)
 
+      order=result
       let len=result.length
       
       for (let i=0;i<len;i++){
@@ -320,14 +319,25 @@ app.get("/order/user/:id",(req,res)=>{
               console.log("ERORR from shopping_cart")
               res.send(err)
             }
- 
-            // console.log(result)
-            order[i]['item']=result
-            // res.send(order)
-            // console.log(order[i])
-            if(i === len-1){
-              res.send(order)
-            }
+
+            let items=result
+
+            let newlen=result.length
+
+            for(let j=0;j<newlen;j++){
+              con.query("select * from products WHERE id=?",result[j].product_id,async (err,result,fields)=>{
+                if (err){
+                  res.send(err)
+                }
+                items[j]['products']=result[0]
+                order[i]['item']= items
+
+                if(i === len-1 && j===newlen-1){
+                  console.log("-------------------")
+                  res.send(order)
+                }
+              })
+              }
 
           })
       }
@@ -376,7 +386,7 @@ app.post("/order",(req,res)=>{
     }
 
   })
-});
+}); 
 
 app.put("/order",(req,res)=>{
   const values=[req.body.date,req.body.id];
