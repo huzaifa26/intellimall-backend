@@ -343,7 +343,7 @@ app.post("/order",(req,res)=>{
     }
 
     for (let i=0;i<req.body.cart.length;i++){
-      con.query("delete from shopping_cart where id=?",[req.body.cart[i].id],(err,result,fields)=>{
+      con.query("delete from shopping_cart where id=?",req.body.cart[i].id,(err,result,fields)=>{
         if (err){
           console.log("ERORR INSERTING INTO ORDERS TABLE")
           res.send(err)
