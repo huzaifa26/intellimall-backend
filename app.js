@@ -348,7 +348,7 @@ app.post("/order",(req,res)=>{
           console.log("ERORR INSERTING INTO ORDERS TABLE")
           res.send(err)
         } 
-        if(i === req.body.cart.length-1){
+        if(i === req.body.cart.length-1){ 
           res.send(result)
         }
       })
