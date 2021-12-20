@@ -63,7 +63,19 @@ app.get('/feedback/:user_id/:order_id',(req,res)=>{
   con.query("select * from feedback where user_id=? and order_id=?",[req.params.user_id,req.params.order_id], (err, result, fields)=> {
     if (err) {
       res.send(err)
-    } 
+    }
+    if (result.length === 0){
+      res.send(
+        {
+          id:1,
+          user_id:1,
+          order_id:1,
+          rating:0.0,
+          last_activity_at: "",
+          status:"",
+          comment:"",
+      })
+    }
     res.send(result);
   })
 });
