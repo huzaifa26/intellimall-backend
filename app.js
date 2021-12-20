@@ -71,12 +71,13 @@ app.get('/feedback/:user_id/:order_id',(req,res)=>{
           user_id:1,
           order_id:1,
           rating:0.0,
-          last_activity_at: "",
+          last_activity_at: "", 
           status:"",
           comment:"",
       }) 
+    } else{
+      res.send(result);
     }
-    res.send(result);
   })
 });
 
