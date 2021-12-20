@@ -372,20 +372,27 @@ app.get("/cart/:id",(req,res)=>{
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
       res.send(err)
-    }
+    } 
 
-    let obj={}
-    let len=result.length-1
-    obj=result
-
-    for(let i=0;i<=len;i++){
-      con.query("select * from products where id=?",result[i].product_id,(err,result,fields)=>{
-        obj[i].product=result[0]
-        if (i == len){
-          res.send(obj) 
-        }
-      })
+    if(result.length != 0){
+      let obj={}
+      let len=result.length-1
+      obj=result
+  
+      for(let i=0;i<=len;i++){
+        con.query("select * from products where id=?",result[i].product_id,(err,result,fields)=>{
+          console.log(result)
+          obj[i].product=result[0]
+          if (i == len){
+            res.send(obj) 
+          } 
+        })
+      }
+    } else  {
+      res.send([])
     }
+    
+
   })
 });
 
