@@ -39,7 +39,8 @@ var con = mysql.createConnection({
 
 con.connect((err)=> {
   if (err) {
-    throw err
+    // throw err
+    console.log(err)
   }
   console.log("Connected!");
 }); 
@@ -311,32 +312,57 @@ app.get("/order/user/:id",(req,res)=>{
   })
 });
 
-// ["Beverages","Bread","Canned Goods","Dairy","Dry Goods","Frozen Foods","Meat"]
-
-// ["beverages","bread","bakery","canned goods","jarred goods","dairy","dry goods","baking goods","frozen foods","meat"]
-
 app.post("/order",(req,res)=>{
-  const values=[[req.body.user_id,req.body.price,req.body.status,req.body.date]];
+  let price=0
+  for (let i=0;i<req.body.cart.length;i++){
+    price=price+req.body.cart[i].quantity*req.body.cart[i].product.price
+  }
+
+  const values=[[req.body.user_id,price,"In Progress",req.body.date]];
 
   con.query("insert into orders(user_id,price,status,last_updated_at) values ?",[values],(err,result,fields)=>{
     if (err){
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-    res.send(result)
+
+    let order_id=result.insertId  
+
+    for (let i=0;i<req.body.cart.length;i++){
+    let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
+      // console.log(values)
+      con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
+        if (err){
+          console.log("ERORR INSERTING INTO ORDERS TABLE")
+          res.send(err)
+        } 
+        if(i === req.body.cart.length-1){
+          res.send(result)
+        }
+      })
+    }
+
+    for (let i=0;i<req.body.cart.length;i++){
+      con.query("delete from shopping_cart where id=?",[req.body.cart[i].id],(err,result,fields)=>{
+        if (err){
+          console.log("ERORR INSERTING INTO ORDERS TABLE")
+          res.send(err)
+        } 
+        res.send(result)
+      })
+    }
+
   })
 });
 
 app.put("/order",(req,res)=>{
   const values=[req.body.date,req.body.id];
-
   con.query('UPDATE orders SET last_updated_at=?, status="Completed" WHERE id=?',values,(err,result,fields)=>{
     if (err){
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
     res.send(result)
-
   })
 });
 
@@ -415,6 +441,7 @@ app.get("/orderitems/:user_id",(req,res)=>{
   })
 
 app.post("/orderitems",(req,res)=>{ 
+
   const values=[[req.body.product_id ,req.body.order_id ,req.body.quantity ,req.body.price ,req.body.date]];
 
   con.query("insert into order_items(product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
