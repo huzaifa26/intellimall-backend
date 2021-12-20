@@ -207,3 +207,6 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2021-12-12  2:40:40
+
+
+CREATE TABLE `feedback` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` INT(11) NOT NULL , `last_activity_at` VARCHAR(30) NOT NULL , `status` VARCHAR(30) NOT NULL , `rating` INT(11) NOT NULL , `comment` VARCHAR(5000) NULL , `order_id` INT(11) NOT NULL ) ENGINE = InnoDB;

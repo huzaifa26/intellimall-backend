@@ -294,20 +294,20 @@ app.get("/order/user/:id",(req,res)=>{
   con.query(sql,req.params.id,(err,result,fields)=>{
     if (err){
       console.log("ERORR GETTING ALL ORDERS")
+    }else if (result.length>0){
+      order=result[0]
+      con.query("select * from shopping_cart WHERE user_id=?",req.params.id,(err,result,fields)=>{
+        if (err){
+          console.log("ERORR from shopping_cart")
+          res.send(err)
+        }
+        order['item']=result
+        res.send([order])
+      })
+    } else {
+      res.send([])
     }
-    console.log("Successfull")
-    order=result[0]
     
-      
-    con.query("select * from shopping_cart WHERE user_id=?",req.params.id,(err,result,fields)=>{
-      if (err){
-        console.log("ERORR GETTING ALL ORDERS")
-        // res.send(err)
-      }
-      console.log(result[0])
-      order['item']=result
-      res.send(order)
-    })
   })
 });
 
