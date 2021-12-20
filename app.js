@@ -74,7 +74,7 @@ app.get('/feedback/:user_id/:order_id',(req,res)=>{
           last_activity_at: "",
           status:"",
           comment:"",
-      })
+      }) 
     }
     res.send(result);
   })
