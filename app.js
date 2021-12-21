@@ -220,9 +220,9 @@ app.put('/user',(req,res)=>{
 });
 
 app.put('/user/:id',(req,res)=>{
-  const values=[req.body.name, req.body.email_address, req.body.password, req.body.phone, req.body.address, req.params.id];
+  const values=[req.body.name, req.body.email_address, req.body.phone, req.body.address, req.params.id];
      
-    con.query("UPDATE users set name=?, email_address=?, password=?, phone=?, address=? where id=?",values, function (err, result, fields) {
+    con.query("UPDATE users set name=?, email_address=?, phone=?, address=? where id=?",values, function (err, result, fields) {
       if (err) {
         res.send(err)
       }else{
