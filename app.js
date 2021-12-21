@@ -478,15 +478,29 @@ app.delete("/cart",(req,res)=>{
   })
 })
 
-app.get("/orderitems/:user_id",(req,res)=>{
+app.get("/orderitems/:order_id",(req,res)=>{
 
-  const sql="select p.*,o.quantity from products as p JOIN order_items as o on p.id = o.product_id where p.id and o.product_id in (select product_id from shopping_cart where user_id=?)"
+  const sql="select * from order_items where order_id=?"
 	
-	con.query(sql,req.params.user_id,(err,result,fields)=>{
+	con.query(sql,req.params.order_id,(err,result,fields)=>{
       if (err){
         res.send(err)
       }
-      res.send(result)
+      console.log(result)
+      items=result
+      len=result.length
+      for(let i=0;i<len;i++){
+        con.query("select * from products where id=?",result[i].product_id,(err,result,field)=>{
+          console.log(result)
+          items[i]['product']=result[0]
+          if(i===len-1){
+            res.send(items)
+          }
+        })
+      }
+
+
+      // res.send(result)
     })
   })
 
