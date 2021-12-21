@@ -76,7 +76,7 @@ app.get('/feedback/:user_id/:order_id',(req,res)=>{
           comment:"",
       }) 
     } else{
-      res.send(result);
+      res.send(result[0]);
     }
   })
 });
