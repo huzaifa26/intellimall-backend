@@ -333,9 +333,8 @@ app.get("/order/user/:id",(req,res)=>{
                 order[i]['item']= items
 
                 if(i === len-1 && j===newlen-1){
-                  console.log("-------------------")
                   res.send(order)
-                }
+                } 
               })
               }
 
@@ -395,7 +394,18 @@ app.put("/order",(req,res)=>{
       console.log("ERORR INSERTING INTO ORDERS TABLE")
       res.send(err)
     }
-    res.send(result)
+    // res.send(result)
+  })
+
+  con.query("select user_id from orders where id=?",req.body.id,(err,result,fields)=>{
+    const values1=[[result[0].user_id,req.body.date,"pending",0,"",req.body.id]];
+
+    con.query("insert into feedback(user_id,last_activity_at,status,rating,comment,order_id) values ?",[values1], function (err, result, fields) {
+      if (err) {
+        res.send(err)
+      }
+      res.send(result);
+    });
   })
 }); 
 
