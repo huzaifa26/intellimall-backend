@@ -482,7 +482,7 @@ app.get("/orderitems/:order_id",(req,res)=>{
 
   const sql="select * from order_items where order_id=?"
 	
-	con.query(sql,req.params.order_id,(err,result,fields)=>{
+	con.query(sql,req.params.order_id,(err,result,fields)=>{ 
       if (err){
         res.send(err)
       }
