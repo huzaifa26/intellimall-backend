@@ -370,7 +370,8 @@ app.post("/order",(req,res)=>{
         } 
 
         con.query("select count from product where id=?",req.body.cart[i].product_id,(err,result,fields)=>{
-          console.log(result[0].count)
+          // console.log(result[0].count)
+          let counter=result[0].count+1
           con.query("update product set count=? where id=?",[counter,req.body.cart[i].product_id],(err,result,fields)=>{
             console.log("---------------------------------------------------")
             console.log(result)
@@ -390,7 +391,8 @@ app.post("/order",(req,res)=>{
           console.log("ERORR INSERTING INTO ORDERS TABLE")
           res.send(err)
         } 
-        res.send(result)
+        // res.send(result)
+        console.log("succesfully deleted")
       })
     }
 
