@@ -366,7 +366,7 @@ app.post("/order",(req,res)=>{
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
 
-      con.query("insert into interested_in (user_id,interests) values ?"[req.body.cart[i].user_id,req.body.cart[i].product.category],(err,result,fields)=>{
+      con.query("insert into interested_in (user_id,interests) values ?",[req.body.cart[i].user_id,req.body.cart[i].product.category],(err,result,fields)=>{
         if (err){
           console.log(err)
         }
