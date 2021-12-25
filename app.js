@@ -361,12 +361,12 @@ app.post("/order",(req,res)=>{
     }
     let order_id=result.insertId  
     for (let i=0;i<req.body.cart.length;i++){
-      console.log("-------------------------------")
-      console.log(req.body.cart[i].user_id)
+      // console.log("-------------------------------")
+      // console.log(req.body.cart[i].user_id)
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
 
-      // con.query("insert into interested_in (user_id,interests) values ?"["user_id",req.body.cart[i].product.category])
+      con.query("insert into interested_in (user_id,interests) values ?"[req.body.cart[i].user_id,req.body.cart[i].product.category])
 
 
       con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
