@@ -370,10 +370,10 @@ app.post("/order",(req,res)=>{
         } 
 
         con.query("select count from products where id=?",req.body.cart[i].product_id,(err,result,fields)=>{
-          let counter=result.count+1
+          let counter=result.count
           console.log("---------------------------------------------------")
 
-          console.log(counter)
+          console.log(result.count)
           // con.query("update products set count=? where id=?",[counter,req.body.cart[i].product_id],(err,result,fields)=>{
             // console.log("---------------------------------------------------")
           //   console.log(result)
