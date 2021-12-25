@@ -367,20 +367,14 @@ app.post("/order",(req,res)=>{
       // console.log(values)
 
       con.query("select * from interested_in where user_id=? and interests=?",[req.body.cart[i].user_id,req.body.cart[i].product.category],(err,result,fields)=>{
-        
-        console.log("********************************************")
-        
-        console.log(req.body.cart[i].user_id,req.body.cart[i].product.category)
-
-
-        // if (result.length === 0){
-        //     let values2=[[req.body.cart[i].user_id,req.body.cart[i].product.category]]
-        //     con.query("insert into interested_in (user_id,interests) values ?",[values2],(err,result,fields)=>{
-        //       if (err){
-        //         console.log(err)
-        //       }
-        //     })
-        // }
+        if (result.length === 0){
+            let values2=[[req.body.cart[i].user_id,req.body.cart[i].product.category]]
+            con.query("insert into interested_in (user_id,interests) values ?",[values2],(err,result,fields)=>{
+              if (err){
+                console.log(err)
+              }
+            })
+        }
       })
 
       con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
