@@ -373,7 +373,6 @@ app.post("/order",(req,res)=>{
         }
       })
 
-
       con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
         if (err){
           console.log("ERORR INSERTING INTO ORDERS TABLE")
@@ -537,6 +536,12 @@ app.post("/orderitems",(req,res)=>{
     res.send(result)
   })
 });
+
+app.get("/interests/:user_id",(req,res)=>{
+  con.query("select * from interested_in where user_id=?",req.params.user_id,(err,result,fields)=>{
+    res.send(result)
+  })
+})
 
 let port=process.env.PORT || 5000 
 app.listen(port,()=>{
