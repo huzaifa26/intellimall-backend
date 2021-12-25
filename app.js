@@ -361,6 +361,7 @@ app.post("/order",(req,res)=>{
     }
     let order_id=result.insertId  
     for (let i=0;i<req.body.cart.length;i++){
+      console.log(req.body.cart[i])
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
       con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
@@ -371,11 +372,7 @@ app.post("/order",(req,res)=>{
 
         con.query("select count from products where id=?",req.body.cart[i].product_id,(err,result,fields)=>{
           let counter=result[0].count+1
-          // console.log("---------------------------------------------------")
-
-          // console.log(result[0].count)
           con.query("update products set count=? where id=?",[counter,req.body.cart[i].product_id],(err,result,fields)=>{
-            console.log("---------------------------------------------------")
             console.log(result)
           })
         })
