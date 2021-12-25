@@ -366,11 +366,21 @@ app.post("/order",(req,res)=>{
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
 
-      let values2=[[req.body.cart[i].user_id,req.body.cart[i].product.category]]
-      con.query("insert into interested_in (user_id,interests) values ?",[values2],(err,result,fields)=>{
-        if (err){
-          console.log(err)
-        }
+      con.query("select * from interested_in where user_id=? and interests=?",[req.params.user_id,req.body.cart[i].product.category],(err,result,fields)=>{
+        
+        console.log("********************************************")
+        
+        console.log(result)
+
+
+        // if (result.length === 0){
+        //     let values2=[[req.body.cart[i].user_id,req.body.cart[i].product.category]]
+        //     con.query("insert into interested_in (user_id,interests) values ?",[values2],(err,result,fields)=>{
+        //       if (err){
+        //         console.log(err)
+        //       }
+        //     })
+        // }
       })
 
       con.query("insert into order_items (product_id,order_id,quantity,price,added_at) values ?",[values],(err,result,fields)=>{
