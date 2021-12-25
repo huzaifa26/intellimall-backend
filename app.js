@@ -370,7 +370,7 @@ app.post("/order",(req,res)=>{
         
         console.log("********************************************")
         
-        console.log([req.params.user_id,req.body.cart[i].product.category)
+        console.log(req.params.user_id,req.body.cart[i].product.category)
 
 
         // if (result.length === 0){
