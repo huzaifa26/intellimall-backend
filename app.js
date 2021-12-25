@@ -255,10 +255,10 @@ app.get('/product/:title',(req,res)=>{
 
 app.post('/product',(req,res)=>{
   const values=[	
-  [req.body.title,req.body.description,req.body.image_url,req.body.price,req.body.category.toLowerCase(),req.body.last_updated_at]
+  [req.body.title,req.body.description,req.body.image_url,req.body.price,req.body.category.toLowerCase(),req.body.last_updated_at,0]
   ];
 
-  con.query("insert into products(title,description,image_url,price,category,last_updated_at) values ?",[values], function (err, result, fields) {
+  con.query("insert into products(title,description,image_url,price,category,last_updated_at,count) values ?",[values], function (err, result, fields) {
     if (err) {
       res.send(err)
     }
@@ -368,6 +368,12 @@ app.post("/order",(req,res)=>{
           console.log("ERORR INSERTING INTO ORDERS TABLE")
           res.send(err)
         } 
+
+        con.query("select count from product where id=?",req.body.cart[i].product_id,(err,result,fields)=>{
+          console.log(result)
+        })
+
+
         if(i === req.body.cart.length-1){ 
           res.send(result)
         }
