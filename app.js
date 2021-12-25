@@ -361,6 +361,7 @@ app.post("/order",(req,res)=>{
     }
     let order_id=result.insertId  
     for (let i=0;i<req.body.cart.length;i++){
+      console.log("-------------------------------")
       console.log(req.body.cart[i])
     let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
       // console.log(values)
