@@ -474,8 +474,8 @@ app.post("/cart",(req,res)=>{
 
 app.put("/cart",(req,res)=>{
   if (req.body.quantity === 0){
-    let sql= "delete from shopping_cart where id=?"
-      con.query(sql,req.body.id,(err,result,fields)=>{
+    let sql= "delete from shopping_cart where user_id=? AND product_id=?"
+      con.query(sql,[req.body.quantity,req.body.user_id,req.body.product_id],(err,result,fields)=>{
         if (err){
           console.log("ERROR IN UPDATING PRODUCT TABLE")
           console.log(err)
