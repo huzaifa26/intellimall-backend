@@ -361,10 +361,7 @@ app.post("/order",(req,res)=>{
     }
     let order_id=result.insertId  
     for (let i=0;i<req.body.cart.length;i++){
-      // console.log("-------------------------------")
-      // console.log(req.body.cart[i].user_id)
-    let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
-      // console.log(values)
+      let values=[[req.body.cart[i].product_id ,order_id ,req.body.cart[i].quantity ,req.body.cart[i].product.price ,req.body.date]];
 
       con.query("select * from interested_in where user_id=? and interests=?",[req.body.cart[i].user_id,req.body.cart[i].product.category],(err,result,fields)=>{
         if (result.length === 0){
@@ -476,20 +473,26 @@ app.post("/cart",(req,res)=>{
 });
 
 app.put("/cart",(req,res)=>{
-  let sql=''
   if (req.body.quantity === 0){
-    sql= "delete from shopping_cart where user_id=? and product_id=?"
-  } else {
-    sql= "UPDATE shopping_cart set quantity=? where user_id=? AND product_id=?"
-  }
+    let sql= "delete from shopping_cart where id=?"
+      con.query(sql,req.body.id,(err,result,fields)=>{
+        if (err){
+          console.log("ERROR IN UPDATING PRODUCT TABLE")
+          console.log(err)
+        }
+        res.send(result);
+    })
 
-  con.query(sql,[req.body.quantity,req.body.user_id,req.body.product_id],(err,result,fields)=>{
-    if (err){
-      console.log("ERROR IN UPDATING PRODUCT TABLE")
-      console.log(err)
-    }
-    res.send(result);
-  })
+  } else if(req.body.quantity > 0) {
+     let sql= "UPDATE shopping_cart set quantity=? where user_id=? AND product_id=?"
+     con.query(sql,[req.body.quantity,req.body.user_id,req.body.product_id],(err,result,fields)=>{
+      if (err){
+        console.log("ERROR IN UPDATING PRODUCT TABLE")
+        console.log(err)
+      }
+      res.send(result);
+    })
+  }
 })
 
 app.delete("/cart",(req,res)=>{
