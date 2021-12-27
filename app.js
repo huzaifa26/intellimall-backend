@@ -137,20 +137,6 @@ app.get('/user',(req,res)=>{
 
 app.get('/user/login/:email/:password',(req,res)=>{
   con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
-    // if (err) {
-    //   res.send(err)
-    // }
-    // if (result[0].email_address === req.params.email && result[0].password === req.params.password){
-    //   res.send({
-    //     status: true,
-    //     message: "login successfull",
-    //   });
-    // } else{
-    //   res.send({
-    //     status: false,
-    //     message: "email or password is not correct",
-    //   });
-
       if (result.length > 0){
         res.send({
           user:result[0],
@@ -164,9 +150,6 @@ app.get('/user/login/:email/:password',(req,res)=>{
           message: "email or password is not correct",
         });
     }
-    // console.log(result[0]) 
-    // res.send(result);
-
   });
 });
 
@@ -175,28 +158,35 @@ app.post('/user',(req,res)=>{
   const values=[ 
   [req.body.name,req.body.email_address,req.body.password,req.body.phone,req.body.address,req.body.is_allowed_in_app,req.body.joined_at]
   ];
-	 
-  con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
-    if (err) {
-      if(err.code === "ER_DUP_ENTRY"){
-        res.send({
-          message:"Email Already used",
-          user: null
-        })
-      }
-    }else{
-      res.send({
-        message:"Resigteration Successful",
-        user:{name:req.body.name,
-        email_address:req.body.email_address,
-        password:req.body.password,
-        phone:req.body.phone,
-        address:req.body.address,
-        is_allowed_in_app:req.body.is_allowed_in_app,
-        joined_at:req.body.joined_at}
+
+  con.query("select email_address from users where email_address=?",req.body.email_address,(err,result,fields)=>{
+    if (result.length === 0){
+      con.query("insert into users(name,email_address,password,phone,address,is_allowed_in_app,joined_at) values ?",[values], function (err, result, fields) {
+        if (err) {
+            res.send({
+              message:"Error registering user",
+              user: null
+            })
+        }else{
+          res.send({
+            message:"Resigteration Successful",
+            user:{name:req.body.name,
+            email_address:req.body.email_address,
+            password:req.body.password,
+            phone:req.body.phone,
+            address:req.body.address,
+            is_allowed_in_app:req.body.is_allowed_in_app,
+            joined_at:req.body.joined_at}
+          });
+        }
       });
+    } else if(result.length > 0){
+      res.send({
+        message:"Email already exists",
+        user:null
+      })
     }
-  });
+  })
 });
 
 app.put('/user',(req,res)=>{
@@ -220,7 +210,7 @@ app.put('/user',(req,res)=>{
 });
 
 app.put('/user/:id',(req,res)=>{
-  const values=[req.body.name, req.body.email_address, req.body.phone, req.body.address, req.params.id];
+  const values=[req.body.name,req.body.email_address,req.body.phone,req.body.address,req.params.id];
      
     con.query("UPDATE users set name=?, email_address=?, phone=?, address=? where id=?",values, function (err, result, fields) {
       if (err) {
