@@ -32,9 +32,9 @@ app.use(bodyParser.json({ limit: '50mb' }))
 
 var con = mysql.createConnection({
   host: "sql6.freemysqlhosting.net",
-  user: "sql6459930",
-  password: "BXgVmKuFeJ",
-  database: "sql6459930" 
+  user: "sql6461450",
+  password: "7XPw4BXpQr",
+  database: "sql6461450" 
 });
  
 con.connect((err)=> {
