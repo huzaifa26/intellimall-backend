@@ -135,6 +135,16 @@ app.get('/user',(req,res)=>{
   });
 });
 
+app.get("/getUser/:id",(req,res)=>{
+  con.query("select * from users where id=?",req.params.id,(err,result,fields)=>{
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result)
+    }
+  })
+})
+
 app.get('/user/login/:email/:password',(req,res)=>{
   con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
       if (result.length > 0){
