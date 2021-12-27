@@ -170,7 +170,9 @@ app.post('/user',(req,res)=>{
         }else{
           res.send({
             message:"Resigteration Successful",
-            user:{name:req.body.name,
+            user:{
+            id:result.insertId,
+            name:req.body.name,
             email_address:req.body.email_address,
             password:req.body.password,
             phone:req.body.phone,
@@ -198,7 +200,6 @@ app.put('/user',(req,res)=>{
       }
       res.send(result);
     });
-
   }else if(req.body.is_allowed_in_app === 1){
     con.query("update users SET is_allowed_in_app=? WHERE id=?",[0,req.body.id], function (err, result, fields) {
       if (err) {
