@@ -21,20 +21,13 @@ app.use(cors())
 
 // app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
-app.use(bodyParser.json({ limit: '50mb' }))
-
-// var con = mysql.createConnection({
-//   host: "localhost", 
-//   user: "root",
-//   password: "password",
-//   database: "intellimall" 
-// });
+app.use(bodyParser.json({ limit: '50mb' })) 
 
 var con = mysql.createConnection({
   host: "sql6.freemysqlhosting.net",
-  user: "sql6461450",
-  password: "7XPw4BXpQr",
-  database: "sql6461450" 
+  user: "sql6464862",
+  password: "gsulCAU19R",
+  database: "sql6464862" 
 });
  
 con.connect((err)=> {
