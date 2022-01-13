@@ -140,7 +140,7 @@ app.get("/getUser/:id",(req,res)=>{
 
 app.get('/user/login/:email/:password',(req,res)=>{
   con.query("select * from users where email_address=? and password=?",[req.params.email,req.params.password], function (err, result, fields) {
-      if (result.length > 0){
+    if (result.length > 0 && result[0].password === req.params.password){
         res.send({
           user:result[0],
           status: true,
@@ -150,7 +150,7 @@ app.get('/user/login/:email/:password',(req,res)=>{
         res.send({
           user:null,
           status: false,
-          message: "email or password is not correct",
+          message: "Email or Password is not correct",
         });
     }
   });
